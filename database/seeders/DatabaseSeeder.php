@@ -14,5 +14,6 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(PrefectureTableSeeder::class);
         $this->call(WeatherTableSeeder::class);
+        $this->call(RegionsTableSeeder::class);
     }
 }

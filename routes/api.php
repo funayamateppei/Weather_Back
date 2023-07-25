@@ -21,3 +21,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('/prefectures', [SearchController::class, 'getPrefectures'])->name('getPrefectures');
+Route::get('/regions', [SearchController::class, 'getRegions'])->name('getRegions');
