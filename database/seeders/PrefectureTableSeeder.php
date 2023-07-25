@@ -6,9 +6,9 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-// use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Log;
 
-class WeatherTableSeeder extends Seeder
+class PrefectureTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -16,7 +16,7 @@ class WeatherTableSeeder extends Seeder
     public function run(): void
     {
         // txtファイルのパスを指定
-        $filePath = public_path('weather_code.txt');
+        $filePath = public_path('prefecture_code.txt');
 
         // ファイルの内容を取得
         $fileContents = file_get_contents($filePath);
@@ -24,14 +24,14 @@ class WeatherTableSeeder extends Seeder
         // ファイル内容を配列に変換
         $data = json_decode($fileContents, true);
 
-        // Log::debug($data);
+        Log::debug($data);
 
         if (!empty($data)) {
-            foreach ($data as $code => $weatherData) {
-                DB::table('weather')->insert([
-                    'weather_code' => $code, // keyを使用
-                    'weather' => $weatherData[3], // 配列の4番目の値を使用
-                    'image_code' => $weatherData[0], // 配列の0番目の値を使用
+            foreach ($data as $code => $prefectureData) {
+                DB::table('prefecture')->insert([
+                    'prefecture' => $prefectureData[1], // 配列の1番目の値を使用
+                    'group' => $prefectureData[0], // 配列の0番目の値を使用
+                    'prefecture_code' => $code, // keyを使用
                 ]);
             }
         }
