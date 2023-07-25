@@ -6,7 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-use Illuminate\Support\Facades\Log;
+// use Illuminate\Support\Facades\Log;
 
 class PrefectureTableSeeder extends Seeder
 {
@@ -24,11 +24,11 @@ class PrefectureTableSeeder extends Seeder
         // ファイル内容を配列に変換
         $data = json_decode($fileContents, true);
 
-        Log::debug($data);
+        // Log::debug($data);
 
         if (!empty($data)) {
             foreach ($data as $code => $prefectureData) {
-                DB::table('prefecture')->insert([
+                DB::table('prefectures')->insert([
                     'prefecture' => $prefectureData[1], // 配列の1番目の値を使用
                     'group' => $prefectureData[0], // 配列の0番目の値を使用
                     'prefecture_code' => $code, // keyを使用
