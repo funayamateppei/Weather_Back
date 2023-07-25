@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\SearchController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -18,6 +20,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/test', function () {
-    return response()->json('test');
-});
+Route::get('/prefectures', [SearchController::class, 'getPrefectures'])->name('getPrefectures');
