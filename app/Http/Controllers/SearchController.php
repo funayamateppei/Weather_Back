@@ -36,7 +36,7 @@ class SearchController extends Controller
         $data = Prefecture::with(['regions' => function ($query) use ($today) {
             $query->whereDate('created_at', $today)
                 ->with('weather');
-        }])->where('prefecture_code', $prefecture_code)->orderBy('id', 'asc')->get();
+        }])->where('prefecture_code', $prefecture_code)->orderBy('id', 'asc')->first();
 
         // Log::debug($data);
         // Log::debug($today);
