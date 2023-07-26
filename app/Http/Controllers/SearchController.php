@@ -34,7 +34,8 @@ class SearchController extends Controller
         $today = Carbon::today()->toDateString();
         $prefecture_code = $request['prefecture_code'];
         $data = Prefecture::with(['regions' => function ($query) use ($today) {
-            $query->whereDate('created_at', $today);
+            $query->whereDate('created_at', $today)
+                ->with('weather');
         }])->where('prefecture_code', $prefecture_code)->orderBy('id', 'asc')->get();
 
         // Log::debug($data);
