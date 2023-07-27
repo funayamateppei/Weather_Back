@@ -73,6 +73,49 @@ class SearchController extends Controller
         return response()->json($data);
     }
 
+    public function getRegionWeather(Request $request)
+    {
+        $prefecture_code = $request['prefecture_code'];
+        $region_name = $request['region_name'];
+        
+        $apiUrl = "https://www.jma.go.jp/bosai/forecast/data/forecast/$prefecture_code.json";
+        $response = Http::get($apiUrl);
+
+        if ($response->successful()) {
+            $filteredData = array_filter($response[0]['timeSeries'][0]['areas'], function ($item) use ($region_name) {
+                return $item['area']['name'] === $region_name;
+            });
+            // "weatherCodes"の順番通りにデータを取得し、weather_codeを入れ替える
+            foreach ($filteredData[0]['weatherCodes'] as $index => $code) {
+                $weatherData = Weather::where('weather_code', $code)->first();
+                if ($weatherData) {
+                    $filteredData[0]['weatherCodes'][$index] = $weatherData;
+                }
+            }
+            $filteredData[0]['pops'] = array_filter($response[0]['timeSeries'][1]['areas'], function ($item) use ($region_name) {
+                return $item['area']['name'] === $region_name;
+            })[0]['pops'];
+
+            $weekWeather = $response[1]['timeSeries'][0]['areas'];
+            // "weatherCodes"の順番通りにデータを取得し、weather_codeを入れ替える
+            foreach ($weekWeather[0]['weatherCodes'] as $index => $code) {
+                $weatherData = Weather::where('weather_code', $code)->first();
+                if ($weatherData) {
+                    $weekWeather[0]['weatherCodes'][$index] = $weatherData;
+                }
+            }
+
+            $detailData = [
+                'Detail' => $filteredData[0], // 本日と明日の天気情報と降水確率など
+                'Week' => $weekWeather // 該当地域の１週間の天気情報
+            ];
+            // Log::debug($detailData);
+            return response()->json($detailData);
+        } else {
+            return response()->json($response);
+        }
+    }
+
     // Laravel側からHTTP通信で外部APIを呼び出せるかテスト
     // public function test(Request $request)
     // {
