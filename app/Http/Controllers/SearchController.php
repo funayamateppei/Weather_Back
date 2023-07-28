@@ -98,6 +98,9 @@ class SearchController extends Controller
                 return $item['area']['name'] === $region_name;
             });
             $filteredPop = array_values($filteredAreaPop);
+            while (count($filteredPop[0]['pops']) < 8) {
+                array_unshift($filteredPop[0]['pops'], "-");
+            }
             $filteredData[0]['pops'] = $filteredPop[0]['pops'];
 
             $weekWeather = $response[1]['timeSeries'][0]['areas'];
