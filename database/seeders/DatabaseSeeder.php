@@ -12,11 +12,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        $this->call(PrefectureTableSeeder::class);
+        $this->call(WeatherTableSeeder::class);
+        $this->call(RegionsTableSeeder::class);
     }
 }
