@@ -92,6 +92,10 @@ class SearchController extends Controller
                 $weatherData = Weather::where('weather_code', $code)->first();
                 if ($weatherData) {
                     $filteredData[0]['weatherCodes'][$index] = $weatherData;
+                    $DateString = $response[0]['timeSeries'][0]['timeDefines'][$index]; // 日付の表記変更
+                    $carbonDate = Carbon::parse($DateString);
+                    $formattedDate = $carbonDate->format('n/j');
+                    $filteredData[0]['weatherCodes'][$index]['date'] = $formattedDate;
                 }
             }
             $filteredAreaPop = array_filter($response[0]['timeSeries'][1]['areas'], function ($item) use ($region_name) {
@@ -102,6 +106,7 @@ class SearchController extends Controller
                 array_unshift($filteredPop[0]['pops'], "-");
             }
             $filteredData[0]['pops'] = $filteredPop[0]['pops'];
+
 
             $weekWeather = $response[1]['timeSeries'][0]['areas'];
             // "weatherCodes"の順番通りにデータを取得し、weather_codeを入れ替える
