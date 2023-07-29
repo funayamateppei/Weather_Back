@@ -117,7 +117,7 @@ class SearchController extends Controller
                     $weekWeather[0]['weatherCodes'][$index]['pop'] = $response[1]['timeSeries'][0]['areas'][0]['pops'][$index];
                     $DateString = $response[1]['timeSeries'][0]['timeDefines'][$index]; // 日付の表記変更
                     $carbonDate = Carbon::parse($DateString);
-                    $carbonDate->subDay();
+                    // $carbonDate->subDay();
                     $formattedDate = $carbonDate->format('n/j');
                     $weekWeather[0]['weatherCodes'][$index]['date'] = $formattedDate;
                 }
